@@ -1,0 +1,190 @@
+{
+  "basePath": "/_ah/api",
+  "consumes": [
+    "application/json"
+  ],
+  "definitions": {
+    "MainEchoResponse": {
+      "properties": {
+        "content": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "MainUserCreateResponse": {
+      "properties": {
+        "join_date": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "MainUserList": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/definitions/MainUserCreateResponse"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ProtorpcMessagesCombinedContainer": {
+      "properties": {
+        "username": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "host": "localhost:8080",
+  "info": {
+    "title": "echo",
+    "version": "v1"
+  },
+  "paths": {
+    "/echo/v1/createUser": {
+      "post": {
+        "operationId": "EchoApi_createUser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainUserCreateResponse"
+            }
+          }
+        }
+      }
+    },
+    "/echo/v1/echo": {
+      "post": {
+        "operationId": "EchoApi_echo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainEchoResponse"
+            }
+          }
+        }
+      }
+    },
+    "/echo/v1/echo/getApiKey": {
+      "get": {
+        "operationId": "EchoApi_echoApiKey",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainEchoResponse"
+            }
+          }
+        }
+      }
+    },
+    "/echo/v1/echo/getUserEmail": {
+      "get": {
+        "operationId": "EchoApi_getUserEmail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainEchoResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "google_id_token": []
+          }
+        ],
+        "x-security": [
+          {
+            "google_id_token": {
+              "audiences": [
+                "your-oauth-client-id.com"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "/echo/v1/echo/{n}": {
+      "post": {
+        "operationId": "EchoApi_echoPathParameter",
+        "parameters": [
+          {
+            "default": 1,
+            "format": "int64",
+            "in": "path",
+            "name": "n",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainEchoResponse"
+            }
+          }
+        }
+      }
+    },
+    "/echo/v1/echoGet": {
+      "get": {
+        "operationId": "EchoApi_echoGet",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainEchoResponse"
+            }
+          }
+        }
+      }
+    },
+    "/echo/v1/users": {
+      "get": {
+        "operationId": "EchoApi_users",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "schema": {
+              "$ref": "#/definitions/MainUserList"
+            }
+          }
+        }
+      }
+    }
+  },
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "google_id_token": {
+      "authorizationUrl": "",
+      "flow": "implicit",
+      "type": "oauth2",
+      "x-issuer": "accounts.google.com",
+      "x-jwks_uri": "https://www.googleapis.com/oauth2/v1/certs"
+    }
+  },
+  "swagger": "2.0"
+}

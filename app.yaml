@@ -1,0 +1,41 @@
+runtime: python27
+threadsafe: true
+api_version: 1
+basic_scaling:
+  max_instances: 2
+
+#[START_EXCLUDE]
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?setuptools/script \(dev\).tmpl$
+#[END_EXCLUDE]
+
+handlers:
+# The endpoints handler must be mapped to /_ah/api.
+- url: /_ah/api/.*
+  script: main.api
+- url: /api-docs
+  static_files: echov1openapi.json
+  upload: echov1openapi.json
+- url: /docs
+  static_files: docs/index.html
+  upload: docs/index.html
+- url: /docs/(.*)
+  static_files: docs/\1
+  upload: docs/.
+
+libraries:
+- name: pycrypto
+  version: 2.6
+- name: ssl
+  version: 2.7.11
+
+env_variables:
+  # The following values are to be replaced by information from the output of
+  # 'gcloud service-management deploy swagger.json' command.
+  ENDPOINTS_SERVICE_NAME: echo-api.endpoints.megan-666.cloud.goog
+  ENDPOINTS_SERVICE_VERSION: 2017-01-11r0

@@ -1,0 +1,1 @@
+google-endpoints --extra-index-url=https://gapi-pypi.appspot.com/admin/nurpc-dev

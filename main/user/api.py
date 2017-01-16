@@ -6,7 +6,7 @@ import endpoints
 from google.appengine.ext import ndb
 
 from .models import User
-from .messages import UserCreateRequest, UserCreateResponse, UserListMessage
+from .messages import UserCreateRequest, UserCreateResponse, UserListMessage, USER_RESOURCE, EchoResponse, ECHO_RESOURCE
 
 @endpoints.api(name='echo', version='v1')
 class EchoApi(remote.Service):
@@ -32,7 +32,7 @@ class EchoApi(remote.Service):
         # This method takes a ResourceContainer defined above.
         message_types.VoidMessage,
         # This method returns an Echo message.
-        UserList,
+        UserListMessage,
         path='users',
         http_method='GET',
         name='users')
@@ -44,7 +44,7 @@ class EchoApi(remote.Service):
         for user in user_list:
             user_message_list.append(UserCreateResponse(username=user.username,
                                                         join_date=user.join_date))
-        return UserList(items=user_message_list)
+        return UserListMessage(items=user_message_list)
 
     @endpoints.method(
         # This method takes a ResourceContainer defined above.

@@ -15,7 +15,6 @@
 """This is a sample Hello World API implemented using Google Cloud
 Endpoints."""
 
-# [START imports]
 import endpoints
 
 # [END imports]
@@ -29,10 +28,9 @@ import endpoints
 
 
 
-# [START api_server]
-from user.api import EchoApi
+from root_api import api_collection
 
-api = endpoints.api_server([
-    EchoApi,
-])
-# [END api_server]
+import user.api as user
+
+api = endpoints.api_server([api_collection])
+

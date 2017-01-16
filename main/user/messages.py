@@ -15,13 +15,13 @@ class UserCreateRequest(messages.Message):
     username = messages.StringField(1, required=True)
 
 
-class UserCreateResponse(messages.Message):
+class UserResponse(messages.Message):
     username = messages.StringField(1)
     join_date = message_types.DateTimeField(2)
 
 
 class UserListMessage(messages.Message):
-    items = messages.MessageField(UserCreateResponse, 1, repeated=True)
+    items = messages.MessageField(UserResponse, 1, repeated=True)
 
 
 USER_RESOURCE = endpoints.ResourceContainer(

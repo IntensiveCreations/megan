@@ -12,21 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""This is a sample Hello World API implemented using Google Cloud
-Endpoints."""
-
 import endpoints
-
-# [END imports]
-
-
-
-
-
-
-
-
-
 
 from root_api import api_collection
 

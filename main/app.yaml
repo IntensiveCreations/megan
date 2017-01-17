@@ -18,7 +18,7 @@ handlers:
   script: main.api
 
 - url: /api-docs
-  static_files: static/echov1openapi.json
+  static_files: static/meganv1openapi.json
   upload: static/echov1openapi.json
 
 - url: /openapi

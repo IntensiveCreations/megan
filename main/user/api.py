@@ -10,11 +10,12 @@ from .models import User
 from .messages import UserCreateRequest, UserResponse, UserListMessage, USER_RESOURCE, EchoResponse, ECHO_RESOURCE
 
 
-@api_collection.api_class(resource_name='users', path="/users")
-class ResourceCollectionApi(remote.Service):
+@api_collection.api_class(resource_name='users')
+class UserCollectionApi(remote.Service):
     @endpoints.method(
         USER_RESOURCE,
         UserResponse,
+        path="users",
         http_method='POST')
     def post(self, request):
 
@@ -29,8 +30,9 @@ class ResourceCollectionApi(remote.Service):
     @endpoints.method(
         message_types.VoidMessage,
         UserListMessage,
+        path="users",
         http_method='GET')
-    def get(self, request):
+    def hello(self, request):
 
         user_list = User.query().order(-User.join_date)
         user_message_list = []

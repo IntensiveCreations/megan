@@ -19,15 +19,15 @@ handlers:
 
 - url: /api-docs
   static_files: static/meganv1openapi.json
-  upload: static/echov1openapi.json
+  upload: static/meganv1openapi.json
 
-- url: /openapi
-  static_files: static/swagger-ui/index.html
-  upload: static/swagger-ui/index.html
+- url: /api
+  static_files: static/swagger-ui.html
+  upload: static/swagger-ui.html
 
-- url: /docs/(.*)
-  static_files: static/swagger-ui/\1
-  upload: static/swagger-ui/.
+- url: /s/(.*)
+  static_files: static/\1
+  upload: static/.
 
 libraries:
 - name: pycrypto

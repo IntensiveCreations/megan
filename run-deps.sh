@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-pip install -t main/lib -r requirements-vendor.txt
+pip install --upgrade -t main/lib -r requirements-vendor.txt
 

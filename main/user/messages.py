@@ -50,7 +50,7 @@ class UserResponse(messages.Message):
     description = messages.StringField(140)
     latex_allergy = messages.BooleanField(150)
     nest = messages.BooleanField(160)
-    last_online_datetime = messages.StringField(170)
+    last_online_datetime = message_types.DateTimeField(170)
 
 
 class UserListMessage(messages.Message):

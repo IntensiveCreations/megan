@@ -1,4 +1,6 @@
 from google.appengine.ext import ndb
+from google.appengine.ext.ndb.model import Property
+
 import dateutil.parser
 from .messages import UserResponse
 
@@ -20,6 +22,15 @@ class User(ndb.Model):
     latex_allergy = ndb.BooleanProperty(required=False, indexed=False, default=False)
     nest = ndb.BooleanProperty(required=False, indexed=False, default=False)
     last_online_datetime = ndb.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
+
+    def populate_non_null_value(self, ** kwds):
+        cls = self.__class__
+        for name, value in kwds.iteritems():
+            prop = getattr(cls, name)  # Raises AttributeError for unknown properties.
+            if not isinstance(prop, Property):
+                raise TypeError('Cannot set non-property %s' % name)
+            if value is not None:
+                prop._set_value(self, value)
 
     def to_message(self):
         return UserResponse(
@@ -50,7 +61,7 @@ class User(ndb.Model):
                 phone=message.phone,
                 birth_date=dateutil.parser.parse(message.birth_date))
         else:
-            return existing_user.populate(
+            return existing_user.populate_non_null_value(
                 nickname=message.nickname,
                 email=message.email,
                 phone=message.phone,

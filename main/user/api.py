@@ -3,13 +3,14 @@ import datetime
 from google.appengine.api import search
 from google.appengine.ext import ndb
 
-import dateutil.parser
 from protorpc import remote
 
 import endpoints
 from root_api import api_collection
 from .models import User
 from .messages import *
+
+import logging
 
 
 @api_collection.api_class(resource_name='users')
@@ -22,7 +23,10 @@ class UserCollectionApi(remote.Service):
     def post(self, request):
 
         new_user = User.from_message(request)
-        new_user.put()
+        user_key = new_user.put()
+        log = logging.getLogger(__name__)
+        log.error("user id is {}".format(user_key.id()))
+
         new_user_message = new_user.to_message()
 
         return new_user_message
@@ -70,6 +74,9 @@ class UserResourceApi(remote.Service):
         update_datetime = datetime.datetime.now()
         if request.location is not None:
             user_index = search.Index(name='user')
+
+            log = logging.getLogger(__name__)
+            log.error("user location is {},{}".format(request.location.latitude, request.location.longitude))
 
             geo_point = search.GeoPoint(request.location.latitude, request.location.longitude)
 

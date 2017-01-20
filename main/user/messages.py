@@ -53,6 +53,11 @@ class UserResponse(messages.Message):
     last_online_datetime = message_types.DateTimeField(170)
 
 
+class GetUsersMessage(messages.Message):
+    location = messages.MessageField(GeoMessage, 10, required=False)
+    distance = messages.IntegerField(20)
+
+
 class UserListMessage(messages.Message):
     items = messages.MessageField(UserResponse, 1, repeated=True)
 

@@ -32,13 +32,38 @@ class UserCollectionApi(remote.Service):
         return new_user_message
 
     @endpoints.method(
-        message_types.VoidMessage,
+        GetUsersMessage,
         UserListMessage,
         path="users",
         http_method='GET')
-    def hello(self, request):
+    def get(self, request):
 
-        user_list = User.query().order(-User.join_date)
+        log = logging.getLogger(__name__)
+
+        query_string = "distance(location, geopoint({}, {})) < {}".format(
+            request.location.latitude,
+            request.location.longitude,
+            request.distance)
+
+        log.error(query_string)
+
+        query = search.Query(query_string=query_string)
+
+        user_index = search.Index(name='user')
+        results = user_index.search(query)
+
+        ids = []
+
+        for scored_document in results:
+            log.error("doc_id:{}".format(scored_document.doc_id))
+            ids.append(int(scored_document.doc_id))
+
+        # objects = ndb.get_multi([ndb.Key(User, k) for k in ids])
+
+        # user_list = User.query().order(-User.join_date)
+
+        user_list = ndb.get_multi([ndb.Key(User, k) for k in ids])
+
         user_message_list = []
 
         for user in user_list:
@@ -69,7 +94,7 @@ class UserResourceApi(remote.Service):
         http_method='PATCH')
     def patch(self, request):
 
-        user_id = 5452478162141184
+        user_id = 5328783104016384
         user_id_str = str(user_id)
         update_datetime = datetime.datetime.now()
         if request.location is not None:

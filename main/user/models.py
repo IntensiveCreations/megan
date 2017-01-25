@@ -1,12 +1,53 @@
+from itertools import chain
+
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb.model import Property
 
 import dateutil.parser
+from endpoints_proto_datastore.ndb.model import EndpointsAliasProperty
+from endpoints_proto_datastore.utils import MessageFieldsSchema
 from .messages import UserResponse
+from endpoints_proto_datastore.ndb import EndpointsModel
 
 
-class User(ndb.Model):
-    """Models an individual User entry with username and date."""
+class User(EndpointsModel):
+
+    RW_MESSAGE_FIELDS_SCHEMA = (
+        'nickname',
+        'birth_date',
+        'gender',
+        'is_strokee',
+        'is_stroker',
+        'email',
+        'phone',
+        'home_location',
+        'description',
+        'is_latex_allergic',
+        'has_nest',
+    )
+
+    RO_MESSAGE_FIELDS_SCHEMA = (
+        'join_date',
+        'calculated_field_test',
+        'last_online_datetime'
+    )
+
+    WR_MESSAGE_FIELDS_SCHEMA = (
+    )
+
+    # do not show any fields by default
+    _message_fields_schema = ()
+
+    REQUEST_FIELDS = MessageFieldsSchema(
+        list(chain(RW_MESSAGE_FIELDS_SCHEMA, RW_MESSAGE_FIELDS_SCHEMA)),
+        name="UserRequestFields",
+    )
+    RESPONSE_FIELDS = MessageFieldsSchema(
+        list(chain(RW_MESSAGE_FIELDS_SCHEMA, RO_MESSAGE_FIELDS_SCHEMA)),
+        name="UserResponseFields",
+    )
+
+    """Models an individual User entry."""
     nickname = ndb.StringProperty(required=True, indexed=False)
     join_date = ndb.DateTimeProperty(required=True, indexed=True, auto_now_add=True)
     birth_date = ndb.DateProperty(required=True, indexed=False)
@@ -19,9 +60,13 @@ class User(ndb.Model):
     photo_thumbnail = ndb.StringProperty(required=False, indexed=False)
     home_location = ndb.StringProperty(required=False, indexed=False)
     description = ndb.StringProperty(required=False, indexed=False)
-    latex_allergy = ndb.BooleanProperty(required=False, indexed=False, default=False)
-    nest = ndb.BooleanProperty(required=False, indexed=False, default=False)
+    is_latex_allergic = ndb.BooleanProperty(required=False, indexed=False, default=False)
+    has_nest = ndb.BooleanProperty(required=False, indexed=False, default=False)
     last_online_datetime = ndb.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
+
+    @EndpointsAliasProperty()
+    def calculated_field_test(self):
+        return self.nickname + "yeah"
 
     def populate_non_null_value(self, ** kwds):
         cls = self.__class__

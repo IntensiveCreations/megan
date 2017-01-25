@@ -7,6 +7,7 @@ from google.appengine.ext import ndb
 from protorpc import remote
 
 import endpoints
+from common.api import BaseService
 from root_api import api_collection
 from .models import User
 from .messages import *
@@ -17,7 +18,7 @@ log = logging.getLogger(__name__)
 
 
 @api_collection.api_class(resource_name='users')
-class UserCollectionApi(remote.Service):
+class UserCollectionApi(BaseService):
 
     @User.query_method(
         path="users",
@@ -41,7 +42,7 @@ class UserCollectionApi(remote.Service):
 
 
 @api_collection.api_class(resource_name='user')
-class UserItemApi(remote.Service):
+class UserItemApi(BaseService):
     @User.method(
         path="me",
         http_method='GET',

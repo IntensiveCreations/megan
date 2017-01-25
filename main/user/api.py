@@ -1,4 +1,5 @@
 import datetime
+from itertools import chain
 
 from google.appengine.api import search
 from google.appengine.ext import ndb
@@ -12,64 +13,54 @@ from .messages import *
 
 import logging
 
+log = logging.getLogger(__name__)
+
 
 @api_collection.api_class(resource_name='users')
 class UserCollectionApi(remote.Service):
-    @endpoints.method(
-        UserCreateRequest,
-        UserResponse,
+
+    @User.query_method(
         path="users",
-        http_method='POST')
-    def post(self, request):
+        http_method='GET',
+        collection_fields=User.RESPONSE_FIELDS)
+    def get(self, query):
 
-        new_user = User.from_message(request)
-        user_key = new_user.put()
-        log = logging.getLogger(__name__)
-        log.error("user id is {}".format(user_key.id()))
+        return query
 
-        new_user_message = new_user.to_message()
 
-        return new_user_message
-
-    @endpoints.method(
-        message_types.VoidMessage,
-        UserListMessage,
+    @User.method(
         path="users",
-        http_method='GET')
-    def hello(self, request):
-
-        user_list = User.query().order(-User.join_date)
-        user_message_list = []
-
-        for user in user_list:
-
-            user_message_list.append(user.to_message())
-
-        return UserListMessage(items=user_message_list)
+        http_method='POST',
+        request_fields=User.REQUEST_FIELDS,
+        response_fields=User.RESPONSE_FIELDS
+    )
+    def post(self, entity):
+        user_key = entity.put()
+        log.debug("user id is {}".format(user_key.id()))
+        return entity
 
 
 @api_collection.api_class(resource_name='user')
-class UserResourceApi(remote.Service):
-    @endpoints.method(
-        message_types.VoidMessage,
-        UserResponse,
+class UserItemApi(remote.Service):
+    @User.method(
         path="me",
-        http_method='GET')
-    def post(self, request):
+        http_method='GET',
+        response_fields=User.RESPONSE_FIELDS
+    )
+    def get(self, request):
 
-        user = User.get_by_id(5452478162141184)
-        user_message = user.to_message()
+        user = User.query().get()
+        return user
 
-        return user_message
-
-    @endpoints.method(
-        UserPatchRequest,
-        UserResponse,
+    @User.method(
         path="me",
-        http_method='PATCH')
+        http_method='PATCH',
+        request_fields=User.REQUEST_FIELDS,
+        response_fields=User.RESPONSE_FIELDS
+    )
     def patch(self, request):
 
-        user_id = 5452478162141184
+        user_id = User.query().get().key.id()
         user_id_str = str(user_id)
         update_datetime = datetime.datetime.now()
         if request.location is not None:
@@ -95,5 +86,5 @@ class UserResourceApi(remote.Service):
             user.put()
             return user
 
-        return tx().to_message()
+        return tx()
 

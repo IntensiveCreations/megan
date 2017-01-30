@@ -7,7 +7,7 @@ from google.appengine.ext import ndb
 from protorpc import remote
 
 import endpoints
-from common.api import BaseService
+from common.api import BaseService, fields_to_optional
 from root_api import api_collection
 from .models import User
 from .messages import *
@@ -20,14 +20,45 @@ log = logging.getLogger(__name__)
 @api_collection.api_class(resource_name='users')
 class UserCollectionApi(BaseService):
 
-    @User.query_method(
+    @endpoints.method(
         path="users",
         http_method='GET',
-        collection_fields=User.RESPONSE_FIELDS)
-    def get(self, query):
+        request_message=GetUsersMessage,
+        response_message=User.ProtoCollection(User.RESPONSE_FIELDS)
+    )
+    def get(self, request):
 
-        return query
+        query_string = "distance(location, geopoint({}, {})) < {}".format(
+            request.location.latitude,
+            request.location.longitude,
+            request.distance
+        )
+        log.info(query_string)
 
+        query = search.Query(query_string=query_string)
+
+        user_index = search.Index(name='user')
+        results = user_index.search(query)
+
+        ids = []
+
+        for scored_document in results:
+            log.error("doc_id:{}".format(scored_document.doc_id))
+            ids.append(int(scored_document.doc_id))
+
+        # objects = ndb.get_multi([ndb.Key(User, k) for k in ids])
+
+        # user_list = User.query().order(-User.join_date)
+
+        user_list = ndb.get_multi([ndb.Key(User, k) for k in ids])
+
+        user_message_list = []
+
+        for user in user_list:
+
+            user_message_list.append(user.to_message())
+
+        return user_message_list
 
     @User.method(
         path="users",
@@ -53,11 +84,11 @@ class UserItemApi(BaseService):
         user = User.query().get()
         return user
 
-    @User.method(
+    @endpoints.method(
         path="me",
         http_method='PATCH',
-        request_fields=User.REQUEST_FIELDS,
-        response_fields=User.RESPONSE_FIELDS
+        request_message=fields_to_optional(User.ProtoModel(User.REQUEST_FIELDS)),
+        response_message=User.ProtoModel(User.RESPONSE_FIELDS)
     )
     def patch(self, request):
 

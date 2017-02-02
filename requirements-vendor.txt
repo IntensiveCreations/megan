@@ -1,2 +1,2 @@
-google-endpoints --extra-index-url=https://gapi-pypi.appspot.com/admin/nurpc-dev
+-e https://github.com/IntensiveCreations/endpoints-proto-datastore.git/endpoints_proto_datastore
 python-dateutil

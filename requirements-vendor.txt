@@ -1,2 +1,2 @@
--e https://github.com/IntensiveCreations/endpoints-proto-datastore.git/endpoints_proto_datastore
+#-e git+https://github.com/IntensiveCreations/endpoints-proto-datastore.git#egg=endpoints_proto_datastore
 python-dateutil

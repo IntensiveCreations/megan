@@ -1,0 +1,3 @@
+[submodule "main/endpoints-proto-datastore"]
+	path = main/endpoints-proto-datastore
+	url = https://github.com/IntensiveCreations/endpoints-proto-datastore.git

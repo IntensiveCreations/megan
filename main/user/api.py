@@ -7,7 +7,7 @@ from google.appengine.ext import ndb
 from protorpc import remote
 
 import endpoints
-from common.api import BaseService, fields_to_optional
+from common.api import BaseService
 from root_api import api_collection
 from .models import User
 from .messages import *
@@ -82,12 +82,13 @@ class UserItemApi(BaseService):
     def get(self, request):
 
         user = User.query().get()
+        assert user is not None
         return user
 
     @endpoints.method(
         path="me",
         http_method='PATCH',
-        request_message=fields_to_optional(User.ProtoModel(User.REQUEST_FIELDS)),
+        request_message=User.ProtoModel(User.REQUEST_PATCH_FIELDS, patch_mode=True),
         response_message=User.ProtoModel(User.RESPONSE_FIELDS)
     )
     def patch(self, request):

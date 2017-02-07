@@ -42,6 +42,10 @@ class User(EndpointsModel):
         list(chain(RW_MESSAGE_FIELDS_SCHEMA, RW_MESSAGE_FIELDS_SCHEMA)),
         name="UserRequestFields",
     )
+    REQUEST_PATCH_FIELDS = MessageFieldsSchema(
+        list(chain(RW_MESSAGE_FIELDS_SCHEMA, RW_MESSAGE_FIELDS_SCHEMA)),
+        name="UserRequestPatchFields",
+    )
     RESPONSE_FIELDS = MessageFieldsSchema(
         list(chain(RW_MESSAGE_FIELDS_SCHEMA, RO_MESSAGE_FIELDS_SCHEMA)),
         name="UserResponseFields",

@@ -14,9 +14,9 @@
 
 import endpoints
 
-from root_api import api_collection
 
 import user.api as user
 
+from root_api import api_collection
 api = endpoints.api_server([api_collection])
 

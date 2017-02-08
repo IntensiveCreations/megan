@@ -2,7 +2,6 @@ runtime: python27
 threadsafe: true
 api_version: 1
 
-#[START_EXCLUDE]
 skip_files:
 - ^(.*/)?#.*#$
 - ^(.*/)?.*~$
@@ -10,7 +9,6 @@ skip_files:
 - ^(.*/)?.*/RCS/.*$
 - ^(.*/)?\..*$
 - ^(.*/)?setuptools/script \(dev\).tmpl$
-#[END_EXCLUDE]
 
 handlers:
 # The endpoints handler must be mapped to /_ah/api.
@@ -38,5 +36,5 @@ libraries:
 env_variables:
   # The following values are to be replaced by information from the output of
   # 'gcloud service-management deploy swagger.json' command.
-  ENDPOINTS_SERVICE_NAME: echo-api.endpoints.megan-666.cloud.goog
-  ENDPOINTS_SERVICE_VERSION: 2017-01-11r0
+  ENDPOINTS_SERVICE_NAME: megan.endpoints.megan-158015.cloud.goog
+  ENDPOINTS_SERVICE_VERSION: 2017-02-08r6

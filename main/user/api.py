@@ -81,7 +81,7 @@ class UserItemApi(BaseService):
     )
     def get(self, request):
 
-        user = User.query().get()
+        user = self.get_current_user()
         assert user is not None
         return user
 
@@ -92,8 +92,8 @@ class UserItemApi(BaseService):
         response_message=User.ProtoModel(User.RESPONSE_FIELDS)
     )
     def patch(self, request):
-
-        user_id = User.query().get().key.id()
+        user = self.get_current_user()
+        user_id = user.key.id()
         user_id_str = str(user_id)
         update_datetime = datetime.datetime.now()
         if request.location is not None:

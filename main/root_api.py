@@ -14,13 +14,14 @@ api_collection = endpoints.api(
     name='megan',
     version='v1',
     api_key_required=False,
-#    audiences={
+    audiences={
 #        'https://megan.auth0.com/': ['T8q5ftC6gqIpchpHWs7yfYoCMW4HHZDZ'],
-#        'https://securetoken.google.com/megan-158015': ['https://securetoken.google.com/megan-158015'],
-#    },
+        'https://securetoken.google.com/megan-158015': ['https://securetoken.google.com/megan-158015'],
+    },
     allowed_client_ids=[
 #        'T8q5ftC6gqIpchpHWs7yfYoCMW4HHZDZ',  # auth0
-        'https://securetoken.google.com/megan-158015',  # firebase
+#        'https://securetoken.google.com/megan-158015',  # firebase
+        '*',
     ],
     issuers={
 #        'https://megan.auth0.com/': auth0_issuer,

@@ -33,8 +33,8 @@ libraries:
 - name: ssl
   version: 2.7.11
 
-env_variables:
+#env_variables:
   # The following values are to be replaced by information from the output of
   # 'gcloud service-management deploy swagger.json' command.
-  ENDPOINTS_SERVICE_NAME: megan.endpoints.megan-158015.cloud.goog
-  ENDPOINTS_SERVICE_VERSION: 2017-02-08r6
+#  ENDPOINTS_SERVICE_NAME: megan.endpoints.megan-158015.cloud.goog
+#  ENDPOINTS_SERVICE_VERSION: 2017-02-08r7

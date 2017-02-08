@@ -29,13 +29,6 @@ def fields_to_optional(message):
 
 class BaseService(remote.Service):
 
-    @ndb.transactional
-    def tx_create_or_get_user(self, user_id, extra):
-        user = User.get_by_id(user_id)
-        if user is None:
-            user = User(id=user_id)
-        return user
-
     def get_current_user(self):
         endpoints_user = endpoints.get_current_user()
         if endpoints_user is None:
@@ -46,6 +39,6 @@ class BaseService(remote.Service):
         user = User.get_by_id(user_id)
 
         if user is None:
-            return self.tx_create_or_get_user(user_id)
+            return User.get_or_insert(user_id)
         else:
             return user

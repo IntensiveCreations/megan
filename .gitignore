@@ -96,3 +96,4 @@ ENV/
 meganv1openapi.json
 
 ide-libs/
+main/res/serviceAccountKey.json

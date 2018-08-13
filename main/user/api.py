@@ -77,11 +77,10 @@ class UserItemApi(BaseService):
     @User.method(
         path="me",
         http_method='GET',
-        response_fields=User.RESPONSE_FIELDS
-    )
+        response_fields=User.RESPONSE_FIELDS)
     def get(self, request):
 
-        user = self.get_current_user()
+        user = self.get_current_user(request)
         assert user is not None
         return user
 

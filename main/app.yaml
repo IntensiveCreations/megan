@@ -2,13 +2,12 @@ runtime: python27
 threadsafe: true
 api_version: 1
 
-skip_files:
-- ^(.*/)?#.*#$
-- ^(.*/)?.*~$
-- ^(.*/)?.*\.py[co]$
-- ^(.*/)?.*/RCS/.*$
-- ^(.*/)?\..*$
-- ^(.*/)?setuptools/script \(dev\).tmpl$
+env_variables:
+  # The following values are to be replaced by information from the output of
+  # 'gcloud endpoints services deploy swagger.json' command.
+  ENDPOINTS_SERVICE_NAME: megan-158015.appspot.com
+  ENDPOINTS_SERVICE_VERSION: 2018-07-31r0
+
 
 handlers:
 # The endpoints handler must be mapped to /_ah/api.
@@ -27,14 +26,20 @@ handlers:
   static_files: static/\1
   upload: static/.
 
+builtins:
+- deferred: on
+
 libraries:
 - name: pycrypto
   version: 2.6
 - name: ssl
   version: 2.7.11
 
-#env_variables:
-  # The following values are to be replaced by information from the output of
-  # 'gcloud service-management deploy swagger.json' command.
-#  ENDPOINTS_SERVICE_NAME: megan.endpoints.megan-158015.cloud.goog
-#  ENDPOINTS_SERVICE_VERSION: 2017-02-08r7
+
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+- ^(.*/)?setuptools/script \(dev\).tmpl$

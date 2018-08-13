@@ -1,2 +1,5 @@
 google-endpoints --extra-index-url=https://gapi-pypi.appspot.com/admin/nurpc-dev
 python-dateutil
+firebase-admin
+requests
+requests_toolbelt
